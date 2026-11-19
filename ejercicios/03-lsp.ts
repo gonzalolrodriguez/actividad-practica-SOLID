@@ -1,5 +1,15 @@
-class Rectangle {
-  constructor(protected width: number, protected height: number) {}
+interface Shape {
+  area(): number;
+}
+
+class Rectangle implements Shape {
+  private width: number;
+  private height: number;
+
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
 
   setWidth(width: number): void {
     this.width = width;
@@ -14,23 +24,35 @@ class Rectangle {
   }
 }
 
-class Square extends Rectangle {
-  setWidth(width: number): void {
-    this.width = width;
-    this.height = width;
+class Square implements Shape {
+  private side: number;
+
+  constructor(side: number) {
+    this.side = side;
   }
 
-  setHeight(height: number): void {
-    this.width = height;
-    this.height = height;
+  setSide(side: number): void {
+    this.side = side;
+  }
+
+  area(): number {
+    return this.side * this.side;
   }
 }
 
 function resizeRectangle(rectangle: Rectangle): void {
   rectangle.setWidth(5);
   rectangle.setHeight(10);
-  console.log(`Area esperada: 50. Area obtenida: ${rectangle.area()}`);
+  console.log(`Área esperada del rectángulo (5x10): ${rectangle.area()}`);
 }
 
-resizeRectangle(new Rectangle(1, 1));
-resizeRectangle(new Square(1, 1));
+// Función polimórfica que funciona con cualquier figura (cumple LSP)
+function printArea(shape: Shape): void {
+  console.log(`Área de la figura: ${shape.area()}`);
+}
+
+const rectangle = new Rectangle(1, 1);
+resizeRectangle(rectangle);
+
+const square = new Square(5);
+printArea(square);
